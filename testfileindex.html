@@ -1,12 +1,254 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Website</title>
-  </head>
-  <body>
-    <h1>Hello, world!</h1>
-    <p>My test website is live.</p>
-  </body>
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coming Soon | Kids Sports Gear</title>
+<meta name="description" content="Kids sports gear to get them off the screen and into the backyard. Launching soon.">
+<style>
+  :root {
+    --bg: #fff8ec;
+    --ink: #1d2b3a;
+    --muted: #5b6b7b;
+    --green: #1fa35c;
+    --orange: #ff7a1a;
+    --blue: #2b7de9;
+    --yellow: #ffc933;
+    --card: #ffffff;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* Decorative background shapes */
+  .blob { position: fixed; border-radius: 50%; z-index: 0; opacity: .5; pointer-events: none; }
+  .blob.b1 { width: 340px; height: 340px; background: var(--yellow); top: -120px; right: -100px; }
+  .blob.b2 { width: 280px; height: 280px; background: #bfe9d0; bottom: -100px; left: -90px; }
+  .blob.b3 { width: 160px; height: 160px; background: #cfe2fb; top: 55%; right: 6%; }
+
+  .wrap { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 28px 20px 40px; }
+
+  header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 36px; }
+  .logo-mark { width: 44px; height: 44px; }
+  .brand { font-size: 1.5rem; font-weight: 800; letter-spacing: .5px; }
+
+  .hero { text-align: center; }
+  .pill {
+    display: inline-block; background: var(--ink); color: #fff;
+    font-size: .8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 18px;
+  }
+  h1 { font-size: clamp(2.2rem, 7vw, 4rem); line-height: 1.08; font-weight: 900; margin-bottom: 16px; }
+  h1 .hl { color: var(--orange); }
+  .sub { font-size: clamp(1rem, 2.6vw, 1.2rem); color: var(--muted); max-width: 560px; margin: 0 auto 32px; }
+
+  /* Countdown */
+  .countdown { display: flex; justify-content: center; gap: 12px; margin-bottom: 34px; flex-wrap: wrap; }
+  .unit {
+    background: var(--card); border-radius: var(--radius); min-width: 84px; padding: 14px 10px;
+    box-shadow: 0 6px 0 rgba(29,43,58,.12); border: 2px solid var(--ink);
+  }
+  .unit:nth-child(1) { border-color: var(--green); }
+  .unit:nth-child(2) { border-color: var(--orange); }
+  .unit:nth-child(3) { border-color: var(--blue); }
+  .unit:nth-child(4) { border-color: var(--yellow); }
+  .num { font-size: 2rem; font-weight: 900; display: block; font-variant-numeric: tabular-nums; }
+  .lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 700; }
+  .launched { font-size: 1.4rem; font-weight: 800; color: var(--green); margin-bottom: 34px; }
+
+  /* Signup */
+  .signup {
+    background: var(--card); border: 2px solid var(--ink); border-radius: 24px;
+    padding: 26px 22px; max-width: 540px; margin: 0 auto 44px;
+    box-shadow: 0 8px 0 rgba(29,43,58,.12);
+  }
+  .signup h2 { font-size: 1.25rem; margin-bottom: 6px; }
+  .signup p { color: var(--muted); font-size: .95rem; margin-bottom: 16px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .row input[type=email] {
+    flex: 1 1 220px; padding: 14px 16px; font-size: 1rem; border-radius: 12px;
+    border: 2px solid #cfd6dd; font-family: inherit; background: #fbfcfd;
+  }
+  .row input[type=email]:focus { outline: none; border-color: var(--blue); }
+  button {
+    flex: 0 0 auto; padding: 14px 24px; font-size: 1rem; font-weight: 800; font-family: inherit;
+    background: var(--orange); color: #fff; border: 2px solid var(--ink); border-radius: 12px; cursor: pointer;
+    box-shadow: 0 4px 0 var(--ink); transition: transform .08s, box-shadow .08s;
+  }
+  button:hover { transform: translateY(2px); box-shadow: 0 2px 0 var(--ink); }
+  button:active { transform: translateY(4px); box-shadow: 0 0 0 var(--ink); }
+  .fine { font-size: .78rem; color: var(--muted); margin-top: 12px; }
+  .msg { margin-top: 12px; font-weight: 700; display: none; }
+  .msg.ok { color: var(--green); display: block; }
+  .msg.err { color: #d33; display: block; }
+
+  /* Feature cards */
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .feat { background: var(--card); border-radius: var(--radius); padding: 22px 16px; text-align: center; border: 2px solid transparent; }
+  .feat:nth-child(1) { border-color: var(--green); }
+  .feat:nth-child(2) { border-color: var(--orange); }
+  .feat:nth-child(3) { border-color: var(--blue); }
+  .feat svg { width: 48px; height: 48px; margin-bottom: 10px; }
+  .feat h3 { font-size: 1.05rem; margin-bottom: 4px; }
+  .feat p { font-size: .9rem; color: var(--muted); }
+
+  footer { text-align: center; color: var(--muted); font-size: .85rem; }
+  footer a { color: var(--blue); text-decoration: none; font-weight: 700; }
+
+  /* Bouncing ball */
+  .ball { display: block; width: 74px; height: 74px; margin: 0 auto 10px; animation: bounce 1.1s ease-in-out infinite; }
+  .shadow { width: 54px; height: 8px; border-radius: 50%; background: rgba(29,43,58,.18); margin: 0 auto 18px; animation: shadow 1.1s ease-in-out infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-22px) rotate(180deg); } }
+  @keyframes shadow { 0%,100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(.6); opacity: .5; } }
+  @media (prefers-reduced-motion: reduce) { .ball, .shadow { animation: none; } }
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<div class="wrap">
+  <header>
+    <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="22" fill="#ff7a1a" stroke="#1d2b3a" stroke-width="3"/>
+      <path d="M24 2v44M2 24h44M8 9c8 6 8 24 0 30M40 9c-8 6-8 24 0 30" fill="none" stroke="#1d2b3a" stroke-width="2.5"/>
+    </svg>
+    <!-- EDIT: your store name -->
+    <span class="brand" id="brandName">Your Store Name</span>
+  </header>
+
+  <main class="hero">
+    <svg class="ball" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="22" fill="#ffffff" stroke="#1d2b3a" stroke-width="3"/>
+      <polygon points="24,14 32,20 29,30 19,30 16,20" fill="#1d2b3a"/>
+      <path d="M24 14V4M32 20l9-4M29 30l6 8M19 30l-6 8M16 20l-9-4" stroke="#1d2b3a" stroke-width="2.5" fill="none"/>
+    </svg>
+    <div class="shadow"></div>
+
+    <span class="pill">Coming Soon</span>
+    <h1>Get them off the screen and <span class="hl">into the backyard.</span></h1>
+    <p class="sub">Kids' sports gear that makes active play fun, from skipping ropes and agility ladders to mini soccer goals. Launching soon in Australia.</p>
+
+    <div id="countdownArea">
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div class="unit"><span class="num" id="d">00</span><span class="lbl">Days</span></div>
+        <div class="unit"><span class="num" id="h">00</span><span class="lbl">Hours</span></div>
+        <div class="unit"><span class="num" id="m">00</span><span class="lbl">Mins</span></div>
+        <div class="unit"><span class="num" id="s">00</span><span class="lbl">Secs</span></div>
+      </div>
+    </div>
+
+    <section class="signup" aria-labelledby="signupTitle">
+      <h2 id="signupTitle">Be first through the gates</h2>
+      <p>Join the list for launch-day offers and early access.</p>
+      <!--
+        EDIT: replace the form action with your email service endpoint
+        (e.g. Formspree: https://formspree.io/f/yourFormId, or a Mailchimp/Klaviyo form URL).
+        GitHub Pages is static, so it can't store emails on its own.
+      -->
+      <form id="signupForm" action="YOUR_FORM_ENDPOINT_HERE" method="POST">
+        <div class="row">
+          <input type="email" name="email" id="email" placeholder="Your email address" required aria-label="Email address">
+          <button type="submit">Notify me</button>
+        </div>
+        <p class="msg" id="msg" role="status"></p>
+      </form>
+      <p class="fine">No spam. Unsubscribe any time.</p>
+    </section>
+
+    <section class="features" aria-label="What to expect">
+      <div class="feat">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#d8f3e4"/><path d="M14 26l7 7 13-16" fill="none" stroke="#1fa35c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Parent-checked quality</h3>
+        <p>Sturdy, kid-friendly gear chosen for real backyard use.</p>
+      </div>
+      <div class="feat">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#ffe3cc"/><path d="M12 30c4-12 10-12 12-4s8 6 12-6" fill="none" stroke="#ff7a1a" stroke-width="4" stroke-linecap="round"/></svg>
+        <h3>Active play</h3>
+        <p>Fun ways to build fitness, skills and confidence.</p>
+      </div>
+      <div class="feat">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#d6e7fc"/><rect x="11" y="19" width="26" height="14" rx="3" fill="none" stroke="#2b7de9" stroke-width="3.5"/><path d="M11 25h26M20 19v14" stroke="#2b7de9" stroke-width="3"/></svg>
+        <h3>Delivered Aussie-wide</h3>
+        <p>Easy ordering and tracked delivery to your door.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="year"></span> <span id="footBrand">Your Store Name</span>. All rights reserved.</p>
+    <!-- EDIT: add your social links -->
+    <p style="margin-top:6px">Follow along: <a href="#">Instagram</a> &middot; <a href="#">TikTok</a> &middot; <a href="#">Facebook</a></p>
+  </footer>
+</div>
+
+<script>
+  // ===== EDIT THESE =====
+  const STORE_NAME  = "Your Store Name";
+  const LAUNCH_DATE = "2026-11-15T09:00:00+11:00"; // Melbourne time (AEDT)
+  // ======================
+
+  document.getElementById("brandName").textContent = STORE_NAME;
+  document.getElementById("footBrand").textContent = STORE_NAME;
+  document.title = "Coming Soon | " + STORE_NAME;
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Countdown
+  const target = new Date(LAUNCH_DATE).getTime();
+  const pad = n => String(n).padStart(2, "0");
+  function tick() {
+    const diff = target - Date.now();
+    if (isNaN(target) || diff <= 0) {
+      document.getElementById("countdownArea").innerHTML = '<p class="launched">We\'re live, or about to be. Check back shortly!</p>';
+      return false;
+    }
+    document.getElementById("d").textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById("h").textContent = pad(Math.floor(diff / 3600000) % 24);
+    document.getElementById("m").textContent = pad(Math.floor(diff / 60000) % 60);
+    document.getElementById("s").textContent = pad(Math.floor(diff / 1000) % 60);
+    return true;
+  }
+  if (tick()) {
+    const timer = setInterval(() => { if (!tick()) clearInterval(timer); }, 1000);
+  }
+
+  // Signup form (works once you set a real endpoint in the form's action)
+  const form = document.getElementById("signupForm");
+  const msg = document.getElementById("msg");
+  form.addEventListener("submit", async (e) => {
+    const action = form.getAttribute("action");
+    if (!action || action.includes("YOUR_FORM_ENDPOINT_HERE")) {
+      e.preventDefault();
+      msg.className = "msg err";
+      msg.textContent = "Signup isn't connected yet. Add your form endpoint in index.html.";
+      return;
+    }
+    e.preventDefault();
+    try {
+      const res = await fetch(action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { "Accept": "application/json" }
+      });
+      if (res.ok) {
+        form.reset();
+        msg.className = "msg ok";
+        msg.textContent = "You're on the list. Thanks!";
+      } else {
+        throw new Error("bad response");
+      }
+    } catch (err) {
+      msg.className = "msg err";
+      msg.textContent = "Something went wrong. Please try again.";
+    }
+  });
+</script>
+</body>
 </html>
