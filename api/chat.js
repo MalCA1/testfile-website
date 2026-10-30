@@ -1,9 +1,9 @@
 const BUSINESS_FACTS = [
-  "The business sells kids' sports gear intended to encourage active play outdoors.",
+  "Lucky Kids Sports sells kids' sports gear intended to encourage active outdoor play.",
   "Products named on the website include skipping ropes, agility ladders, and mini soccer goals.",
-  "The launch announcement says delivery will be available Australia-wide and tracked.",
+  "The website says delivery will be available Australia-wide and tracked.",
   "The website describes the gear as sturdy and kid-friendly, selected for backyard use.",
-  "The published launch date is 15 November 2026 at 9:00 AM Melbourne time.",
+  "The published launch date is 15 November 2026 at 9:00 AM Melbourne time. This date may change; only state it as the currently published date.",
   "The website does not confirm current stock, specific prices, delivery timeframes, shipping fees, returns, warranties, or detailed product specifications."
 ].join("\n");
 
@@ -74,7 +74,7 @@ module.exports = async function handler(req, res) {
   const contactGuidance = contactUrl
     ? `For an unsupported question, say you do not have confirmed information and direct the visitor to this official contact page: ${contactUrl}`
     : "For an unsupported question, say you do not have confirmed information. Do not invent contact details; tell the visitor that official contact details are not configured on this page yet.";
-  const instructions = `You are the customer Q&A assistant for the Kids Sports Gear website.
+  const instructions = `You are the customer Q&A assistant for Lucky Kids Sports.
 
 Answer only using these confirmed business facts:
 ${BUSINESS_FACTS}

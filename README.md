@@ -1,31 +1,34 @@
-# Kids Sports Gear customer assistant
+# Lucky Kids Sports
 
-A responsive Kids Sports Gear coming-soon landing page with a customer Q&A assistant at the bottom. The original launch countdown, signup form, product details, and store features are shown above the assistant. The assistant is instructed to answer only from the business details below and to admit when the site does not confirm an answer.
+A lightweight, responsive static storefront for Lucky Kids Sports with six linked pages: Home, Our Story, What We Do, Our Projects, Join Us, and Contact Us. The home page includes the original coming-soon details, a launch countdown, product highlights, a clearly unconfigured early-access signup, and the customer Q&A assistant.
 
-## Confirmed information used by the assistant
+## Confirmed store information
 
-- The store is for kids' sports gear that encourages active outdoor play.
-- The launch copy names skipping ropes, agility ladders, and mini soccer goals.
+- Kids' sports gear to encourage active play outdoors.
+- Planned products include skipping ropes, agility ladders, and mini soccer goals.
 - The launch copy describes sturdy, kid-friendly gear selected for backyard use.
-- The launch copy says delivery will be available Australia-wide and tracked.
-- The previous website copy set the launch date to 15 November 2026 at 9:00 AM Melbourne time.
-- Stock, prices, delivery timeframes or costs, returns, warranties, and detailed product specifications are not confirmed.
+- Delivery is described as Australia-wide and tracked.
+- The previously published launch date is 15 November 2026 at 9:00 AM Melbourne time. Verify it is still current before launch.
+- Specific stock, prices, shipping costs and timeframes, returns, warranties, and detailed product specifications are not confirmed.
 
-Review these facts against the current store copy before deployment, especially the launch date and any information that may have changed.
+The assistant uses these facts and is instructed not to guess. The Contact Us page does not invent an email or phone number; add verified details when available.
 
-## Deploy the site and assistant
+## GitHub Pages
 
-GitHub Pages can serve `index.html`, but it cannot run the AI endpoint or keep an API key private. Deploy `api/chat.js` to Vercel (or another compatible serverless Node host) and configure these server-side environment variables:
+The site is static and can be deployed from the repository root using **Settings → Pages → Deploy from a branch**. All page, style, and script files are linked by relative paths so the menu works under the repository URL.
 
-- `OPENAI_API_KEY` — required provider secret; never add it to the repository or browser code.
-- `OPENAI_MODEL` — optional model override; defaults to `gpt-4.1-mini`.
-- `ALLOWED_ORIGIN` — exact website origin. For the Pages URL in this project, set `https://malca1.github.io` (no trailing slash). This is used for CORS.
-- `BUSINESS_CONTACT_URL` — optional official contact page URL. Add this once the store has a confirmed contact path so unsupported questions can be routed there.
+### Optional Q&A backend
 
-For the Pages frontend, set `AI_CHAT_ENDPOINT` near the top of the inline script in `index.html` to the full public HTTPS endpoint, such as `https://your-project.vercel.app/api/chat`, then publish the updated page. Do not put credentials in the endpoint URL. Alternatively, deploy the whole repository on Vercel and set the endpoint to `/api/chat`. It is blank by default so the page does not pretend the assistant is connected before setup.
+GitHub Pages cannot run the AI endpoint or protect an API key. To enable the Q&A assistant:
 
-The endpoint accepts `POST` JSON `{ "message": "..." }` and returns `{ "reply": "..." }` plus an optional `contactUrl`. It validates messages (up to 1,000 characters), limits output length, and applies a small per-instance rate limit. The in-memory limit is best-effort and resets with serverless instances; use a durable rate limiter and monitoring before relying on it for a high-traffic public storefront. Provider keys remain server-side.
+1. Deploy `api/chat.js` to Vercel or another compatible serverless Node host.
+2. Set `OPENAI_API_KEY` in the host's secret environment configuration. Optionally set `OPENAI_MODEL`, `ALLOWED_ORIGIN` (for this GitHub Pages site, `https://malca1.github.io`), and `BUSINESS_CONTACT_URL` to a verified contact page.
+3. Set `AI_CHAT_ENDPOINT` in `site.js` to the backend's public HTTPS endpoint, such as `https://your-project.vercel.app/api/chat`.
+
+The endpoint accepts `POST` JSON `{ "message": "..." }`, limits message length and output size, uses a fixed business-facts prompt, and returns `{ "reply": "..." }` with an optional contact URL. Provider credentials stay server-side. The in-memory rate limit is best-effort; use durable rate limiting and monitoring for a public storefront. Until the endpoint is configured, chat clearly says it is not connected and does not send questions.
+
+The Join Us form also does not collect or store addresses until a real mailing-list service is configured.
 
 ## Local preview
 
-Open `index.html` directly or use a static file server. Without a deployed backend, the assistant cannot answer and will show a clear setup message; it will not pretend to be connected. The signup form also needs a real email-service endpoint before it can collect addresses.
+Open `index.html` directly or serve the repository root with any static file server. No build step or dependencies are required.
