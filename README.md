@@ -1,6 +1,6 @@
 # Kids Sports Gear customer assistant
 
-A responsive customer Q&A page for the Kids Sports Gear website. The assistant is instructed to answer only from the business details below and to admit when the site does not confirm an answer. Tasks and personal reminders from the earlier prototype have been removed.
+A responsive Kids Sports Gear coming-soon landing page with a customer Q&A assistant at the bottom. The original launch countdown, signup form, product details, and store features are shown above the assistant. The assistant is instructed to answer only from the business details below and to admit when the site does not confirm an answer.
 
 ## Confirmed information used by the assistant
 
@@ -28,4 +28,4 @@ The endpoint accepts `POST` JSON `{ "message": "..." }` and returns `{ "reply": 
 
 ## Local preview
 
-Open `index.html` directly or use a static file server. Without a deployed backend, the assistant cannot answer and will show a clear failure message; it will not pretend to be connected.
+Open `index.html` directly or use a static file server. Without a deployed backend, the assistant cannot answer and will show a clear setup message; it will not pretend to be connected. The signup form also needs a real email-service endpoint before it can collect addresses.
