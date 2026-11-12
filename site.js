@@ -68,13 +68,53 @@ if (joinForm) {
   });
 }
 
-const AI_CHAT_ENDPOINT = "";
 const assistantForm = document.getElementById("assistantForm");
 if (assistantForm) {
   const input = document.getElementById("assistantInput");
   const messages = document.getElementById("assistantMessages");
-  const sendButton = document.getElementById("assistantSend");
-  const status = document.getElementById("assistantStatus");
+  const faqAnswers = [
+    {
+      keywords: ["products", "product", "gear", "sell", "offer", "skipping rope", "skip rope", "jump rope", "agility ladder", "soccer goal", "mini goal"],
+      answer: "The store plans to offer skipping ropes, agility ladders, and mini soccer goals. They're planned products; current stock and availability aren't confirmed."
+    },
+    {
+      keywords: ["deliver", "delivery", "shipping", "ship", "australia", "australian", "tracked", "postage"],
+      answer: "The launch information says delivery will be available Australia-wide and tracked. Shipping costs and delivery timeframes haven't been confirmed."
+    },
+    {
+      keywords: ["launch", "opening date", "launch date", "launching", "when is the launch"],
+      answer: "The currently published launch date is 15 November 2026 at 9:00 AM Melbourne time. Launch plans can change, so please check the website for the latest update."
+    },
+    {
+      keywords: ["quality", "sturdy", "kid friendly", "children", "age", "material", "size", "specification"],
+      answer: "The store describes its planned gear as sturdy and kid-friendly, selected for backyard use. Detailed materials, sizes, and product specifications aren't published yet."
+    },
+    {
+      keywords: ["price", "prices", "cost", "how much", "payment", "pay"],
+      answer: "Prices, payment details, and shipping fees aren't published yet. Please check back when the store launches or use the Contact Us page."
+    },
+    {
+      keywords: ["stock", "available", "availability", "buy", "purchase", "order", "in stock"],
+      answer: "The products are listed as planned for launch, but current stock and availability aren't confirmed. Please check back for updates."
+    },
+    {
+      keywords: ["return", "refund", "exchange", "warranty", "guarantee"],
+      answer: "Returns, refunds, exchanges, and warranty details haven't been published yet. Please check the Contact Us page for official help when contact details are available."
+    },
+    {
+      keywords: ["contact", "email", "phone", "address", "talk", "person", "human"],
+      answer: "Official email and phone details aren't published yet. Visit the Contact Us page for updates."
+    },
+    {
+      keywords: ["join", "signup", "sign up", "newsletter", "early access", "notify", "mailing list"],
+      answer: "The site has a launch-updates signup area, but its mailing-list service isn't connected yet. Your address won't be submitted or stored from this page."
+    },
+    {
+      keywords: ["our story", "about lucky kids sports", "who is lucky kids sports"],
+      answer: "Lucky Kids Sports is preparing kids' sports gear to encourage active outdoor play and bring more fun to backyard days. Visit the Our Story page to read more."
+    }
+  ];
+  const unknownAnswer = "I don't have a confirmed answer for that yet. Please check the relevant page or visit Contact Us. Official email and phone details aren't published yet.";
 
   function addMessage(text, kind) {
     const message = document.createElement("div");
@@ -84,6 +124,25 @@ if (assistantForm) {
     messages.scrollTop = messages.scrollHeight;
   }
 
+  function findFaqAnswer(question) {
+    const normalized = question.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim();
+    let bestMatch = null;
+    let bestScore = 0;
+    for (const faq of faqAnswers) {
+      let score = 0;
+      for (const keyword of faq.keywords) {
+        const term = keyword.toLowerCase();
+        if (normalized.includes(term)) score += term.includes(" ") ? 3 : 1;
+      }
+      if (score > bestScore) {
+        bestScore = score;
+        bestMatch = faq;
+      }
+    }
+    return bestMatch ? bestMatch.answer : unknownAnswer;
+  }
+
+  document.getElementById("assistantStatus").textContent = "Instant FAQ answers";
   document.querySelectorAll(".assistant-suggestion").forEach(button => {
     button.addEventListener("click", () => {
       input.value = button.textContent;
@@ -91,52 +150,13 @@ if (assistantForm) {
     });
   });
 
-  assistantForm.addEventListener("submit", async event => {
+  assistantForm.addEventListener("submit", event => {
     event.preventDefault();
     const question = input.value.trim();
     if (!question) return;
     addMessage(question, "user");
     input.value = "";
-    if (!AI_CHAT_ENDPOINT) {
-      addMessage("The assistant isn't connected yet, so your question wasn't sent. Please check back later or use the store's official contact details.", "error");
-      return;
-    }
-
-    sendButton.disabled = true;
-    status.textContent = "Thinking...";
-    try {
-      const response = await fetch(AI_CHAT_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({ message: question })
-      });
-      const data = await response.json().catch(() => null);
-      if (!response.ok) throw new Error(data && data.error ? data.error : `Service returned ${response.status}.`);
-      if (!data || typeof data.reply !== "string" || !data.reply.trim()) throw new Error("The assistant returned an invalid response.");
-      addMessage(data.reply.trim());
-      if (typeof data.contactUrl === "string") {
-        try {
-          const contactUrl = new URL(data.contactUrl);
-          if (contactUrl.protocol === "https:") {
-            const contact = document.getElementById("assistantContact");
-            contact.replaceChildren(document.createTextNode("Need a person? "));
-            const link = document.createElement("a");
-            link.href = contactUrl.href;
-            link.textContent = "Contact Lucky Kids Sports";
-            link.rel = "noopener noreferrer";
-            contact.append(link, document.createTextNode("."));
-          }
-        } catch {
-          // Keep the plain-text contact guidance for invalid optional URLs.
-        }
-      }
-      status.textContent = "Ready to help";
-    } catch {
-      addMessage("Sorry, I couldn't get an answer just now. Please try again later or use the store's official contact details.", "error");
-      status.textContent = "Temporarily unavailable";
-    } finally {
-      sendButton.disabled = false;
-      input.focus();
-    }
+    addMessage(findFaqAnswer(question));
+    input.focus();
   });
 }
