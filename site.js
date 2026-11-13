@@ -68,6 +68,25 @@ if (joinForm) {
   });
 }
 
+const enquiryForm = document.getElementById("enquiryForm");
+if (enquiryForm) {
+  enquiryForm.addEventListener("submit", event => {
+    event.preventDefault();
+    const formData = new FormData(enquiryForm);
+    const recipient = "heritagecanvas@gmail.com";
+    const subject = `Lucky Kids Sports enquiry: ${String(formData.get("subject")).trim()}`;
+    const body = [
+      `Name: ${String(formData.get("name")).trim()}`,
+      `Email: ${String(formData.get("email")).trim()}`,
+      "",
+      String(formData.get("message")).trim()
+    ].join("\n");
+    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    document.getElementById("enquiryStatus").textContent = "Your email app should open with the enquiry ready to review and send. This site does not send or save it.";
+    window.location.href = mailto;
+  });
+}
+
 const assistantForm = document.getElementById("assistantForm");
 if (assistantForm) {
   const input = document.getElementById("assistantInput");
