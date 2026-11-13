@@ -11,7 +11,7 @@ A lightweight, responsive static storefront for Lucky Kids Sports with six linke
 - The previously published launch date is 15 November 2026 at 9:00 AM Melbourne time. Verify it is still current before launch.
 - Specific stock, prices, shipping costs and timeframes, returns, warranties, and detailed product specifications are not confirmed.
 
-The FAQ widget uses these facts and a small set of written responses; it does not generate answers or send questions to a server. Unknown questions receive an explicit fallback. The Contact Us page does not invent an email or phone number; add verified details when available.
+The FAQ widget uses these facts and a small set of written responses; it does not generate answers or send questions to a server. Unknown questions receive an explicit fallback. The Contact Us page opens a prefilled email draft to `heritagecanvas@gmail.com`; visitors must review and send it in their own email app. The static site does not store or transmit enquiry form contents.
 
 ## GitHub Pages
 

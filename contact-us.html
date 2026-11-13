@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fff8ec">
-  <meta name="description" content="Contact Lucky Kids Sports or ask our store assistant a question.">
+  <meta name="description" content="Send an enquiry to Lucky Kids Sports by email.">
   <title>Contact Us | Lucky Kids Sports</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="site.js?v=20261112-faq" defer></script>
+  <script src="site.js?v=20261113-contact" defer></script>
 </head>
 <body>
   <div class="site-shell">
@@ -21,9 +21,28 @@
     <main class="page-main">
       <section class="page-hero"><div class="eyebrow">Contact us</div><h1>We’d love to hear from you.</h1><p>Have a question about our planned kids’ sports gear? Our site assistant can answer using the store information published here.</p></section>
       <section class="content-card section">
-        <h2>Talk to Lucky Kids Sports</h2>
-        <p>We don’t have an official email address, phone number, or contact form published on this site yet. We won’t make one up. Please check back for verified contact details.</p>
-        <p>For general questions, you can also visit the <a href="index.html#assistant">customer Q&amp;A assistant on our home page</a>. It will tell you when an answer isn’t confirmed.</p>
+        <h2>Send us an enquiry</h2>
+        <p>Fill in the form and your email app will open with a message addressed to <a href="mailto:heritagecanvas@gmail.com">heritagecanvas@gmail.com</a>. Review and send it from your email app. This website does not store or send your enquiry itself.</p>
+        <form class="enquiry-form" id="enquiryForm">
+          <div class="enquiry-row">
+            <div>
+              <label for="enquiryName">Your name</label>
+              <input id="enquiryName" name="name" type="text" maxlength="100" autocomplete="name" required>
+            </div>
+            <div>
+              <label for="enquiryEmail">Your email</label>
+              <input id="enquiryEmail" name="email" type="email" maxlength="254" autocomplete="email" required>
+            </div>
+          </div>
+          <label for="enquirySubject">Subject</label>
+          <input id="enquirySubject" name="subject" type="text" maxlength="120" required>
+          <label for="enquiryMessage">How can we help?</label>
+          <textarea id="enquiryMessage" name="message" rows="6" maxlength="3000" required></textarea>
+          <button class="button" type="submit">Continue to email <span aria-hidden="true">→</span></button>
+          <p class="form-status" id="enquiryStatus" role="status" aria-live="polite"></p>
+        </form>
+        <p>If your email app does not open, send your enquiry directly to <a href="mailto:heritagecanvas@gmail.com">heritagecanvas@gmail.com</a>.</p>
+        <p>For general questions, you can also visit the <a href="index.html#assistant">customer FAQ on our home page</a>.</p>
       </section>
       <section class="contact-panel section"><div><strong>Looking for product information?</strong><p>See the gear planned for our first launch.</p></div><a class="button" href="what-we-do.html">What we do →</a></section>
     </main>
