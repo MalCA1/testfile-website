@@ -70,20 +70,69 @@ if (joinForm) {
 
 const enquiryForm = document.getElementById("enquiryForm");
 if (enquiryForm) {
-  enquiryForm.addEventListener("submit", event => {
-    event.preventDefault();
-    const formData = new FormData(enquiryForm);
-    const recipient = "heritagecanvas@gmail.com";
-    const subject = `Lucky Kids Sports enquiry: ${String(formData.get("subject")).trim()}`;
-    const body = [
-      `Name: ${String(formData.get("name")).trim()}`,
-      `Email: ${String(formData.get("email")).trim()}`,
+  const ENQUIRY_API_ENDPOINT = "";
+  const enquiryStatus = document.getElementById("enquiryStatus");
+  const submitButton = enquiryForm.querySelector('button[type="submit"]');
+  const gmailFallback = document.getElementById("gmailFallback");
+
+  function showGmailFallback(payload) {
+    const gmailUrl = new URL("https://mail.google.com/mail/");
+    gmailUrl.searchParams.set("view", "cm");
+    gmailUrl.searchParams.set("fs", "1");
+    gmailUrl.searchParams.set("to", "heritagecanvas@gmail.com");
+    gmailUrl.searchParams.set("su", `Lucky Kids Sports enquiry: ${payload.subject}`);
+    gmailUrl.searchParams.set("body", [
+      `Name: ${payload.name}`,
+      `Email: ${payload.email}`,
       "",
-      String(formData.get("message")).trim()
-    ].join("\n");
-    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    document.getElementById("enquiryStatus").textContent = "Your email app should open with the enquiry ready to review and send. This site does not send or save it.";
-    window.location.href = mailto;
+      payload.message
+    ].join("\n"));
+    gmailFallback.href = gmailUrl.href;
+    gmailFallback.hidden = false;
+  }
+
+  enquiryForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!enquiryForm.reportValidity()) return;
+    const formData = new FormData(enquiryForm);
+    const payload = {
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      subject: String(formData.get("subject") || "").trim(),
+      message: String(formData.get("message") || "").trim(),
+      company: String(formData.get("company") || "").trim()
+    };
+
+    if (!ENQUIRY_API_ENDPOINT) {
+      showGmailFallback(payload);
+      enquiryStatus.textContent = "Online sending isn't connected yet. Open the Gmail draft below, then review and press Send.";
+      enquiryStatus.classList.add("error");
+      return;
+    }
+
+    submitButton.disabled = true;
+    enquiryStatus.classList.remove("error");
+    enquiryStatus.textContent = "Sending your enquiry…";
+    try {
+      const response = await fetch(ENQUIRY_API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(result && result.error ? result.error : `The email service returned ${response.status}.`);
+      }
+      enquiryForm.reset();
+      gmailFallback.hidden = true;
+      enquiryStatus.textContent = "Thanks, your enquiry has been sent to Lucky Kids Sports.";
+    } catch (error) {
+      showGmailFallback(payload);
+      enquiryStatus.textContent = `${error.message} Please use the Gmail draft below or email heritagecanvas@gmail.com directly.`;
+      enquiryStatus.classList.add("error");
+    } finally {
+      submitButton.disabled = false;
+    }
   });
 }
 

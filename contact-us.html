@@ -7,7 +7,7 @@
   <meta name="description" content="Send an enquiry to Lucky Kids Sports by email.">
   <title>Contact Us | Lucky Kids Sports</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="site.js?v=20261113-contact" defer></script>
+  <script src="site.js?v=20261116-gmail-draft" defer></script>
 </head>
 <body>
   <div class="site-shell">
@@ -22,7 +22,7 @@
       <section class="page-hero"><div class="eyebrow">Contact us</div><h1>We’d love to hear from you.</h1><p>Have a question about our planned kids’ sports gear? Our site assistant can answer using the store information published here.</p></section>
       <section class="content-card section">
         <h2>Send us an enquiry</h2>
-        <p>Fill in the form and your email app will open with a message addressed to <a href="mailto:heritagecanvas@gmail.com">heritagecanvas@gmail.com</a>. Review and send it from your email app. This website does not store or send your enquiry itself.</p>
+        <p>Submit your message below to send it to our team. If online sending is not available, you can open a prefilled Gmail draft instead.</p>
         <form class="enquiry-form" id="enquiryForm">
           <div class="enquiry-row">
             <div>
@@ -38,10 +38,15 @@
           <input id="enquirySubject" name="subject" type="text" maxlength="120" required>
           <label for="enquiryMessage">How can we help?</label>
           <textarea id="enquiryMessage" name="message" rows="6" maxlength="3000" required></textarea>
-          <button class="button" type="submit">Continue to email <span aria-hidden="true">→</span></button>
+          <div class="form-trap" aria-hidden="true">
+            <label for="enquiryCompany">Leave this field empty</label>
+            <input id="enquiryCompany" name="company" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <button class="button" type="submit">Send enquiry <span aria-hidden="true">→</span></button>
           <p class="form-status" id="enquiryStatus" role="status" aria-live="polite"></p>
+          <a class="button secondary gmail-fallback" id="gmailFallback" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=heritagecanvas%40gmail.com" target="_blank" rel="noopener noreferrer" hidden>Open Gmail draft</a>
         </form>
-        <p>If your email app does not open, send your enquiry directly to <a href="mailto:heritagecanvas@gmail.com">heritagecanvas@gmail.com</a>.</p>
+        <p>Gmail opens a draft for you to review and send; the website cannot send it from your Gmail account. If you prefer, email <a href="mailto:heritagecanvas@gmail.com">heritagecanvas@gmail.com</a> directly.</p>
         <p>For general questions, you can also visit the <a href="index.html#assistant">customer FAQ on our home page</a>.</p>
       </section>
       <section class="contact-panel section"><div><strong>Looking for product information?</strong><p>See the gear planned for our first launch.</p></div><a class="button" href="what-we-do.html">What we do →</a></section>
